@@ -1,0 +1,11 @@
+appium-server-host: "http://127.0.0.1:4723"
+
+locate-model-type: "remote" # local or remote
+locate-model-host: "http://192.168.1.1:8001" # the host of the remote model
+
+validate-model-type: "remote" # local or remote
+validate-model-host: "http://192.168.1.1:8000" # the host of the remote model
+
+device-type: "android" # android or ios
+app-package: "com.example.app"
+app-activity: "com.example.app.MainActivity"

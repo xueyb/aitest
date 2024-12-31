@@ -1,0 +1,12 @@
+__pycache__
+.idea/
+.DS_Store
+.trunk/
+
+aitest
+showui-2b
+qwen2-vl
+cases/*
+!cases/
+records/*
+!records/
