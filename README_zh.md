@@ -1,8 +1,9 @@
 # ShowUI-2B 自动化测试工具
+（如有任何疑问，发送邮件至：`olkingbing@gmail.com`）
 
 这是一个基于 **Multimodal-Large-Model**(showlab/ShowUI-2B、Qwen/Qwen2-VL-2B-Instruct) 的自动化测试工具, 可以通过自然语言描述来定位 UI 元素, 执行操作和验证结果。
 
-## 功能特点
+## 1. 功能特点
 
 - 支持通过自然语言描述定位 UI 元素
 - 支持本地和远程模型部署
@@ -11,18 +12,18 @@
 - 提供可视化的点击位置标记
 - 提供测试过程回放
 
-## 安装
+## 2. 安装
 ```
 ./install.sh
 ```
 
-## 配置
-config.yml 是配置文件，用于配置定位模型和验证模型。
+## 3. 配置
+`config.yml` 是配置文件，用于配置定位模型和验证模型。
 
-## 测试用例
+## 4. 测试用例
 测试用例放在 `cases` 目录下，用例文件名以 `test_` 开头，用例文件名以 `.yml` 结尾。
 
-## 可执行程序
+## 5. 可执行程序
 ```
 # 直接运行
 aitest
@@ -60,36 +61,54 @@ options:
                         Application activity name
 ```
 
-## 环境搭建
-### appium server
-启动appium server, 并修改config.yml中的:
+## 6. 环境搭建
+### 6.1 Appium Server
+启动appium server, 并修改`config.yml`中的:
 ```
-appium-server-host: {appium-server-host}
+appium-server-host: http://127.0.0.1:4723
 ```
 
-### 多模态大语言模型 - ShowUI-2B (支持本地和远程模式)
-部署 showlab/ShowUI-2B, 并修改 config.yml:
+### 6.2 部署MLLMs-本地模式(不推荐)
+如果本地开发机器性能足够好，则可以local模式启动项目, 按如下修改`config.yml`即可（否则建议在服务器部署MLLMs后，以remote模式启动项目）:
 ```
-# 本地模式. 你的机器需要有更强的性能, 否则会很慢.
 locate-model-type: local
+validate-model-type: local
+```
 
+### 6.3 部署MLLMs-远程模式（推荐）
+除了local模式, 还可以remote模式启动项目, 需准备一台性能足够好的GPU服务器, 并进行如下操作:
+#### 6.3.1 安装vllm
+```
+pip install vllm
+```
+
+#### 6.3.2 部署多模态大语言模型 - ShowUI-2B
+1. 部署 showlab/ShowUI-2B
+```
+vllm serve showlab/ShowUI-2B --port 8001
+```
+
+2. 修改 config.yml:
+```
 # 远程模式
 locate-model-type: remote  
-locate-model-host: {locate-model-host}
+locate-model-host: http://{ip}:8001
 ```
 
-### 多模态大语言模型 - Qwen2-VL-2B-Instruct (支持本地和远程模式)
-部署 Qwen/Qwen2-VL-2B-Instruct, 并修改 config.yml:
+#### 6.3.3 部署多模态大语言模型 - Qwen2-VL-2B-Instruct
+1. 部署 Qwen/Qwen2-VL-2B-Instruct
 ```
-# 本地模式. 你的机器需要有更强的性能, 否则会很慢.
-validate-model-type: local
+vllm serve Qwen/Qwen2-VL-2B-Instruct --port 8002
+```
 
+2. 修改 config.yml:
+```
 # 远程模式
 validate-model-type: remote  
-validate-model-host: {validate-model-host}
+validate-model-host: http://{ip}:8002
 ```
 
-### 设备 (支持 Android 和 iOS)
+### 6.4 设备 (支持 Android 和 iOS)
 ``` 
 # Android
 device-type: android

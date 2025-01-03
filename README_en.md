@@ -1,8 +1,10 @@
 # ShowUI-2B Automation Testing Tool
 
+(If you have any questions, please send an email to: `olkingbing@gmail.com`)
+
 This is an **Automation-Testing-Tool** based on **Multimodal-Large-Model**(showlab/ShowUI-2B、Qwen/Qwen2-VL-2B-Instruct), which can locate UI elements, execute actions and validate results through natural language description.
 
-## Features
+## 1. Features
 
 - Support locating UI elements through natural language description
 - Support local and remote model deployment
@@ -11,18 +13,18 @@ This is an **Automation-Testing-Tool** based on **Multimodal-Large-Model**(showl
 - Provide visual click position marking
 - Provide test process playback
 
-## Installation
+## 2. Installation
 ```
 ./install.sh
 ```
 
-## Configuration
-config.yml is the configuration file, used to configure the locate model and validate model.
+## 3. Configuration
+`config.yml` is the configuration file, used to configure the locate model and validate model.
 
-## Test Cases
+## 4. Test Cases
 Test cases are placed in the `cases` directory, with the test case file name starting with `test_` and ending with `.yml`.
 
-## Executable Program
+## 5. Executable Program
 ```
 # Run directly
 aitest
@@ -60,36 +62,51 @@ options:
                         Application activity name
 ```
 
-## Environment Setup
-### appium server
-启动appium server, 并修改config.yml中的:
+## 6. Environment Setup
+### 6.1 Appium Server
+start appium server, and modify `config.yml`中的:
 ```
-appium-server-host: {appium-server-host}
+appium-server-host: http://127.0.0.1:4723
 ```
 
-### Multi-modal large language model - ShowUI-2B (support remote and local mode)
-Deploy showlab/ShowUI-2B, and modify config.yml:
+### 6.2 Deploy MLLMs - Local Mode (Not Recommend)
+If your machine has a strong performance, you can run the project in local mode. modify `config.yml` as follows(otherwise, please deploy MLLMs in remote mode):
 ```
-# local mode. your machine need have a stronger performance, otherwise it will be very slow.
 locate-model-type: local
-
-# remote mode
-locate-model-type: remote  
-locate-model-host: {locate-model-host}
-```
-
-### Multi-modal large language model - Qwen2-VL-2B-Instruct (support remote and local mode)
-Deploy Qwen/Qwen2-VL-2B-Instruct, and modify config.yml:
-```
-# local mode. your machine need have a stronger performance, otherwise it will be very slow.
 validate-model-type: local
-
-# remote mode 
-validate-model-type: remote  
-validate-model-host: {validate-model-host}
 ```
 
-### Device (support Android and iOS)
+### 6.3 Deploy MLLMs - Remote Mode (Recommend)
+except local mode, you can also run the project in remote mode. you need to prepare a GPU server, and do the following:
+
+#### 6.3.1 Install vllm
+```
+pip install vllm
+```
+
+#### 6.3.2 Deploy MLLMs - ShowUI-2B
+1. Deploy showlab/ShowUI-2B
+```
+vllm serve showlab/ShowUI-2B --port 8001
+```
+2. Modify `config.yml`:
+```
+locate-model-type: remote  
+locate-model-host: http://{ip}:8001
+```
+
+#### 6.3.3 Deploy MLLMs - Qwen2-VL-2B-Instruct
+1. Deploy Qwen/Qwen2-VL-2B-Instruct
+```
+vllm serve Qwen/Qwen2-VL-2B-Instruct --port 8002
+```
+2. Modify `config.yml`:
+```
+validate-model-type: remote  
+validate-model-host: http://{ip}:8002
+```
+
+### 6.4 Device (support Android and iOS)
 ``` 
 # Android
 device-type: android
